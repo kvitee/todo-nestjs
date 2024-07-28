@@ -23,6 +23,17 @@ model Project {
   createdAt DateTime @default(now()) @map("created_at")
   owner     User     @relation(fields: [ownerId], references: [id])
   ownerId   Int      @map("owner_id")
+  columns   Column[]
 
   @@map("projects")
+}
+
+model Column {
+  id        Int     @id @default(autoincrement())
+  title     String
+  number    Int     @unique
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int     @map("project_id")
+
+  @@map("columns")
 }
