@@ -34,6 +34,18 @@ model Column {
   number    Int     @unique
   project   Project @relation(fields: [projectId], references: [id])
   projectId Int     @map("project_id")
+  tasks     Task[]
 
   @@map("columns")
+}
+
+model Task {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  number      Int    @unique
+  column      Column @relation(fields: [columnId], references: [id])
+  columnId    Int    @map("column_id")
+
+  @@map("tasks")
 }
