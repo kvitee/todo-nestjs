@@ -2,7 +2,7 @@
 CREATE TABLE "tasks" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "number" INTEGER NOT NULL,
     "column_id" INTEGER NOT NULL,
 
