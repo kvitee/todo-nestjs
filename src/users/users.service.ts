@@ -11,31 +11,26 @@ export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
   async create(dto: CreateUserDto) {
-    const createdUser = await this.prismaService.user.create({
-      data: dto
+    return await this.prismaService.user.create({
+      data: dto,
+      omit: {
+        password: true,
+      },
     });
-
-    return {
-      id: createdUser.id
-    };
   }
 
   async getAll() {
     return await this.prismaService.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
+      omit: {
+        password: true,
       },
     });
   }
 
   async getById(id: number) {
     return await this.prismaService.user.findUnique({
-      select: {
-        id: true,
-        email: true,
-        name: true,
+      omit: {
+        password: true,
       },
       where: { id },
     });
@@ -43,8 +38,8 @@ export class UsersService {
 
   async update(id: number, dto: UpdateUserDto) {
     await this.prismaService.user.update({
-      where: { id },
       data: dto,
+      where: { id },
     })
   }
 
