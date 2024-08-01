@@ -24,7 +24,7 @@ model User {
 }
 
 model UserRole {
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int  @map("user_id")
   role   Role @default(USER)
 
@@ -37,7 +37,7 @@ model Project {
   id        Int      @id @default(autoincrement())
   name      String
   createdAt DateTime @default(now()) @map("created_at")
-  owner     User     @relation(fields: [ownerId], references: [id])
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId   Int      @map("owner_id")
   columns   Column[]
 
@@ -48,7 +48,7 @@ model Column {
   id        Int     @id @default(autoincrement())
   title     String
   number    Int     @unique
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId Int     @map("project_id")
   tasks     Task[]
 
@@ -60,7 +60,7 @@ model Task {
   title       String
   description String?
   number      Int     @unique
-  column      Column  @relation(fields: [columnId], references: [id])
+  column      Column  @relation(fields: [columnId], references: [id], onDelete: Cascade)
   columnId    Int     @map("column_id")
 
   @@map("tasks")
