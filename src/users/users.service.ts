@@ -12,9 +12,21 @@ export class UsersService {
 
   async create(dto: CreateUserDto) {
     return await this.prismaService.user.create({
-      data: dto,
+      data: {
+        ...dto,
+        roles: {
+          create: {},
+        },
+      },
       omit: {
         password: true,
+      },
+      include: {
+        roles: {
+          select: {
+            role: true,
+          },
+        },
       },
     });
   }
@@ -24,6 +36,13 @@ export class UsersService {
       omit: {
         password: true,
       },
+      include: {
+        roles: {
+          select: {
+            role: true,
+          },
+        },
+      },
     });
   }
 
@@ -32,14 +51,21 @@ export class UsersService {
       omit: {
         password: true,
       },
+      include: {
+        roles: {
+          select: {
+            role: true,
+          },
+        },
+      },
       where: { id },
     });
   }
 
   async update(id: number, dto: UpdateUserDto) {
     await this.prismaService.user.update({
-      data: dto,
       where: { id },
+      data: dto,
     })
   }
 
