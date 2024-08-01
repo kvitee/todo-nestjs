@@ -56,12 +56,13 @@ model Column {
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   description String?
-  number      Int     @unique
-  column      Column  @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  columnId    Int     @map("column_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  number      Int      @unique
+  column      Column   @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId    Int      @map("column_id")
 
   @@map("tasks")
 }
