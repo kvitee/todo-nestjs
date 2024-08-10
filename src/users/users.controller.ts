@@ -2,13 +2,14 @@ import {
   Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put
 } from "@nestjs/common";
 import {
-  ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation,
-  ApiParam, ApiTags
+  ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse,
+  ApiOperation, ApiParam, ApiTags
 } from "@nestjs/swagger";
 
 import { UsersService } from "./users.service";
 
-import { PublicUserDto } from "./dto/public.user.dto";
+import { UserEntity } from "./entities/user.entity";
+
 import { CreateUserDto } from "./dto/create.user.dto";
 import { UpdateUserDto } from "./dto/update.user.dto";
 
@@ -22,8 +23,8 @@ export class UsersController {
     summary: "Create user",
   })
   @ApiCreatedResponse({
-    type: PublicUserDto,
-    description: "User was created successfully.",
+    type: UserEntity,
+    description: "User has created successfully.",
   })
   @Post()
   createUser(@Body() userDto: CreateUserDto) {
@@ -34,7 +35,7 @@ export class UsersController {
     summary: "Get all users",
   })
   @ApiOkResponse({
-    type: [PublicUserDto],
+    type: [UserEntity],
     description: "Success.",
   })
   @Get()
@@ -54,8 +55,11 @@ export class UsersController {
     },
   })
   @ApiOkResponse({
-    type: PublicUserDto,
+    type: UserEntity,
     description: "Success.",
+  })
+  @ApiNotFoundResponse({
+    description: "User with the given ID does not exist."
   })
   @Get("/:id")
   getUserById(@Param("id") id: string) {
@@ -74,7 +78,10 @@ export class UsersController {
     },
   })
   @ApiNoContentResponse({
-    description: "User was updated successfully.",
+    description: "User has updated successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "User with the given ID does not exist."
   })
   @Put("/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -94,7 +101,10 @@ export class UsersController {
     },
   })
   @ApiNoContentResponse({
-    description: "User was deleted successfully."
+    description: "User has deleted successfully."
+  })
+  @ApiNotFoundResponse({
+    description: "User with the given ID does not exist."
   })
   @Delete("/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
