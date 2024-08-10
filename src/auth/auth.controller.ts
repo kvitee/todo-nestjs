@@ -10,6 +10,7 @@ import { AuthEntity } from "./entities/auth.entity";
 
 import { LoginDto } from "./dto/login.dto";
 import { CreateUserDto } from "../users/dto/create.user.dto";
+import { Public } from "./public.decorator";
 
 
 @ApiTags("Authorization")
@@ -27,6 +28,7 @@ export class AuthController {
   @ApiBadRequestResponse({
     description: "User with such email already exist.",
   })
+  @Public()
   @Post("/signup")
   signup(@Body() signUpDto: CreateUserDto) {
     return this.authService.signUp(signUpDto);
@@ -43,6 +45,7 @@ export class AuthController {
     description: "Incorrect email or password.",
   })
   @HttpCode(HttpStatus.OK)
+  @Public()
   @Post("/login")
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);

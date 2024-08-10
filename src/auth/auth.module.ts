@@ -1,4 +1,5 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
+import { APP_GUARD } from "@nestjs/core";
 import { JwtModule } from "@nestjs/jwt";
 
 import { AuthController } from "./auth.controller";
@@ -8,9 +9,10 @@ import { PrismaModule } from "../prisma/prisma.module";
 
 import { UsersModule } from "../users/users.module";
 import { UsersService } from "../users/users.service";
+import { AuthGuard } from "./auth.guard";
 
 
-const jwtSecret = process.env.JWT_SECRET || "secret";
+export const jwtSecret = process.env.JWT_SECRET || "secret";
 
 @Module({
   controllers: [
@@ -19,6 +21,10 @@ const jwtSecret = process.env.JWT_SECRET || "secret";
   providers: [
     AuthService,
     UsersService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
   imports: [
     JwtModule.register({
@@ -29,7 +35,7 @@ const jwtSecret = process.env.JWT_SECRET || "secret";
       },
     }),
     PrismaModule,
-    UsersModule,
+    forwardRef(() => UsersModule),
   ],
   exports: [
     AuthService,
