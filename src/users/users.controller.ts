@@ -2,8 +2,8 @@ import {
   Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put
 } from "@nestjs/common";
 import {
-  ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse,
-  ApiOperation, ApiParam, ApiTags
+  ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse,
+  ApiOkResponse, ApiOperation, ApiParam, ApiTags
 } from "@nestjs/swagger";
 
 import { UsersService } from "./users.service";
@@ -15,6 +15,7 @@ import { UpdateUserDto } from "./dto/update.user.dto";
 
 
 @ApiTags("Users")
+@ApiBearerAuth()
 @Controller("/users")
 export class UsersController {
   constructor(private usersService: UsersService) {}
