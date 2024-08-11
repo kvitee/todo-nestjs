@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
+import * as bcrypt from "bcrypt";
+
 import { UsersService } from "../users/users.service";
 
 import { AuthEntity } from "./entities/auth.entity";
@@ -26,21 +28,27 @@ export class AuthService {
       });
     }
 
-    const createdUser = await this.usersService.create(dto);
+    const passwordHash = await bcrypt.hash(dto.password, 10);
 
-    return this.generateToken(createdUser);
+    const createdUser = await this.usersService.create({
+      ...dto,
+      password: passwordHash
+    });
+
+    return await this.generateToken(createdUser);
   }
 
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
+    const passwordMatch = await bcrypt.compare(dto?.password, user?.password);
 
-    if (!user || user.password !== dto?.password) {
+    if (!user || !passwordMatch) {
       throw new UnauthorizedException({
         message: "Incorrect email or password."
       });
     }
 
-    return this.generateToken(user);
+    return await this.generateToken(user);
   }
 
   private async generateToken(user: UserEntity): Promise<AuthEntity> {
