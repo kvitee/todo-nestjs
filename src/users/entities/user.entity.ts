@@ -1,10 +1,10 @@
-import { User } from "@prisma/client";
 import { ApiProperty } from "@nestjs/swagger";
+import { User, UserRole } from "@prisma/client";
 
 
 export class UserEntity implements User {
   @ApiProperty({
-    example: "1",
+    example: "41",
     description: "ID of user"
   })
   readonly id: number;
@@ -26,4 +26,15 @@ export class UserEntity implements User {
     description: "Name of user"
   })
   readonly name: string;
+
+  @ApiProperty({
+    example: [
+      {
+        userId: 41,
+        role: "USER",
+      },
+    ],
+    description: "Array of user roles"
+  })
+  readonly roles: UserRole[];
 }

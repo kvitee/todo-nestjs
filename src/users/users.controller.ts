@@ -1,5 +1,6 @@
 import {
-  Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put
+  Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put,
+  UseGuards
 } from "@nestjs/common";
 import {
   ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse,
@@ -12,6 +13,9 @@ import { UserEntity } from "./entities/user.entity";
 
 import { CreateUserDto } from "./dto/create.user.dto";
 import { UpdateUserDto } from "./dto/update.user.dto";
+
+import { RequireRoles } from "../auth/require-roles.decorator";
+import { RolesGuard } from "../auth/roles.guard";
 
 
 @ApiTags("Users")
@@ -39,6 +43,8 @@ export class UsersController {
     type: [UserEntity],
     description: "Success.",
   })
+  @UseGuards(RolesGuard)
+  @RequireRoles("ADMIN")
   @Get()
   getAllUsers() {
     return this.usersService.getAll();
