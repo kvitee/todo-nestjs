@@ -40,7 +40,10 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
-    const passwordMatch = await bcrypt.compare(dto?.password, user?.password);
+    const passwordMatch = await bcrypt.compare(
+      dto?.password,
+      user?.password ?? ""
+    );
 
     if (!user || !passwordMatch) {
       throw new UnauthorizedException({
