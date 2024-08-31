@@ -4,7 +4,7 @@ import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
 
 import { PrismaModule } from "../prisma/prisma.module";
-import { AuthModule } from "src/auth/auth.module";
+import { AuthModule } from "../auth/auth.module";
 
 
 @Module({

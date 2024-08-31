@@ -3,7 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  UnauthorizedException
+  UnauthorizedException,
 } from "@nestjs/common";
 import { $Enums, UserRole } from "@prisma/client";
 
@@ -15,10 +15,13 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<$Enums.Role[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredRoles = this.reflector.getAllAndOverride<$Enums.Role[]>(
+      ROLES_KEY,
+      [
+        context.getHandler(),
+        context.getClass(),
+      ]
+    );
 
     if (!requiredRoles || requiredRoles.length === 0) {
       return true;

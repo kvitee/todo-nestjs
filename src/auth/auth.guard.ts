@@ -1,6 +1,9 @@
 import { Request } from "express";
 import {
-  CanActivate, ExecutionContext, Injectable, UnauthorizedException
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
@@ -10,17 +13,20 @@ import { IS_PUBLIC_KEY } from "./public.decorator";
 
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class JwtAuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const isPublic = this.reflector.getAllAndOverride<boolean>(
+      IS_PUBLIC_KEY,
+      [
+        context.getHandler(),
+        context.getClass(),
+      ]
+    );
 
     if (isPublic) {
       return true;
@@ -36,9 +42,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = this.jwtService.verify(
-        token, { secret: jwtSecret }
-      );
+      const payload = this.jwtService.verify(token, { secret: jwtSecret });
 
       request.user = payload;
     } catch (error) {
@@ -52,7 +56,7 @@ export class AuthGuard implements CanActivate {
 
   private extractToken(request: Request): string | undefined {
     const authHeader = request.headers.authorization;
-    const [ type, token ] = authHeader?.split(" ") ?? [];
+    const [type, token] = authHeader?.split(" ") ?? [];
 
     return (type === "Bearer") ? token : undefined;
   }

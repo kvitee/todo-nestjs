@@ -1,13 +1,15 @@
-import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-
 import * as bcrypt from "bcrypt";
-
-import { UsersService } from "../users/users.service";
 
 import { AuthEntity } from "./entities/auth.entity";
 import { LoginDto } from "./dto/login.dto";
 
+import { UsersService } from "../users/users.service";
 import { UserEntity } from "../users/entities/user.entity";
 import { CreateUserDto } from "../users/dto/create.user.dto";
 
@@ -24,7 +26,7 @@ export class AuthService {
 
     if (candidate) {
       throw new BadRequestException({
-        message: "User with such email already exists."
+        message: "User with such email already exists.",
       });
     }
 
@@ -32,7 +34,7 @@ export class AuthService {
 
     const createdUser = await this.usersService.create({
       ...dto,
-      password: passwordHash
+      password: passwordHash,
     });
 
     return await this.generateToken(createdUser);
@@ -47,7 +49,7 @@ export class AuthService {
 
     if (!user || !passwordMatch) {
       throw new UnauthorizedException({
-        message: "Incorrect email or password."
+        message: "Incorrect email or password.",
       });
     }
 
@@ -62,7 +64,7 @@ export class AuthService {
     };
 
     return {
-      accessToken: await this.jwtService.signAsync(payload)
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }

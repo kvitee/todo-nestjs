@@ -1,16 +1,25 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import {
-  ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation,
-  ApiTags, ApiUnauthorizedResponse
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from "@nestjs/common";
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
 import { AuthService } from "./auth.service";
-
 import { AuthEntity } from "./entities/auth.entity";
-
 import { LoginDto } from "./dto/login.dto";
-import { CreateUserDto } from "../users/dto/create.user.dto";
 import { Public } from "./public.decorator";
+
+import { CreateUserDto } from "../users/dto/create.user.dto";
 
 
 @ApiTags("Authorization")

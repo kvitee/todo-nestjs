@@ -9,9 +9,11 @@ export async function startApp() {
   const port = Number(process.env.PORT) || 5000;
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    })
+  );
 
   const config = new DocumentBuilder()
     .setTitle("To-Do App")
