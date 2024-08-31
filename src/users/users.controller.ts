@@ -23,8 +23,8 @@ import {
 
 import { UsersService } from "./users.service";
 import { UserEntity } from "./entities/user.entity";
-import { CreateUserDto } from "./dto/create.user.dto";
-import { UpdateUserDto } from "./dto/update.user.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 import { RequireRoles } from "../auth/require-roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";

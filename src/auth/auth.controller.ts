@@ -19,7 +19,7 @@ import { AuthEntity } from "./entities/auth.entity";
 import { LoginDto } from "./dto/login.dto";
 import { Public } from "./public.decorator";
 
-import { CreateUserDto } from "../users/dto/create.user.dto";
+import { CreateUserDto } from "../users/dto/create-user.dto";
 
 
 @ApiTags("Authorization")

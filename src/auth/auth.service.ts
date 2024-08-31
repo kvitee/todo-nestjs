@@ -11,7 +11,7 @@ import { LoginDto } from "./dto/login.dto";
 
 import { UsersService } from "../users/users.service";
 import { UserEntity } from "../users/entities/user.entity";
-import { CreateUserDto } from "../users/dto/create.user.dto";
+import { CreateUserDto } from "../users/dto/create-user.dto";
 
 
 @Injectable()
