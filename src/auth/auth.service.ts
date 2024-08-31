@@ -8,6 +8,7 @@ import * as bcrypt from "bcrypt";
 
 import { AuthEntity } from "./entities/auth.entity";
 import { LoginDto } from "./dto/login.dto";
+import { jwtConstants } from "./constants";
 
 import { UsersService } from "../users/users.service";
 import { UserEntity } from "../users/entities/user.entity";
@@ -64,7 +65,12 @@ export class AuthService {
     };
 
     return {
-      accessToken: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(
+        payload,
+        {
+          secret: jwtConstants.secret,
+        }
+      ),
     };
   }
 }

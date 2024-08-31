@@ -8,7 +8,7 @@ import {
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 
-import { jwtSecret } from "./auth.module";
+import { jwtConstants } from "./constants";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 
 
@@ -42,7 +42,12 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     try {
-      const payload = this.jwtService.verify(token, { secret: jwtSecret });
+      const payload = this.jwtService.verify(
+        token,
+        {
+          secret: jwtConstants.secret,
+        }
+      );
 
       request.user = payload;
     } catch (error) {
