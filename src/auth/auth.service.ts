@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -23,14 +22,6 @@ export class AuthService {
   ) {}
 
   async signUp(dto: CreateUserDto) {
-    const candidate = await this.usersService.findByEmail(dto.email);
-
-    if (candidate) {
-      throw new BadRequestException({
-        message: "User with such email already exists.",
-      });
-    }
-
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const createdUser = await this.usersService.create({
