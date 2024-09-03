@@ -6,8 +6,8 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
-  Put,
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -99,7 +99,7 @@ export class UsersController {
   @ApiNotFoundResponse({
     description: "User with the given ID does not exist.",
   })
-  @Put("/:id")
+  @Patch("/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
   updateUser(@Param("id") id: string, @Body() userDto: UpdateUserDto) {
     return this.usersService.update(+id, userDto);
