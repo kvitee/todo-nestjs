@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from "@nestjs/common";
@@ -66,9 +67,6 @@ export class UsersController {
     name: "id",
     description: "ID of user which you need to get.",
     example: 41,
-    schema: {
-      type: "number",
-    },
   })
   @ApiOkResponse({
     type: UserEntity,
@@ -78,7 +76,7 @@ export class UsersController {
     description: "User with the given ID does not exist.",
   })
   @Get("/:id")
-  getUserById(@Param("id") id: string) {
+  getUserById(@Param("id", ParseIntPipe) id: number) {
     return this.usersService.getById(+id);
   }
 
@@ -89,9 +87,6 @@ export class UsersController {
     name: "id",
     description: "ID of user which you need to update.",
     example: 41,
-    schema: {
-      type: "number",
-    },
   })
   @ApiNoContentResponse({
     description: "User has updated successfully.",
@@ -101,8 +96,11 @@ export class UsersController {
   })
   @Patch("/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
-  updateUser(@Param("id") id: string, @Body() userDto: UpdateUserDto) {
-    return this.usersService.update(+id, userDto);
+  updateUser(
+    @Param("id", ParseIntPipe) id: number,
+    @Body() userDto: UpdateUserDto
+  ) {
+    return this.usersService.update(id, userDto);
   }
 
   @ApiOperation({
@@ -112,9 +110,6 @@ export class UsersController {
     name: "id",
     description: "ID of user which you need to delete.",
     example: 41,
-    schema: {
-      type: "number",
-    },
   })
   @ApiNoContentResponse({
     description: "User has deleted successfully.",
@@ -124,7 +119,7 @@ export class UsersController {
   })
   @Delete("/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteUser(@Param("id") id: string) {
-    return this.usersService.delete(+id);
+  deleteUser(@Param("id", ParseIntPipe) id: number) {
+    return this.usersService.delete(id);
   }
 }
