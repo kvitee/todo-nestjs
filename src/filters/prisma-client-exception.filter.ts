@@ -15,8 +15,6 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
 
     let message = exception.message;
 
-    console.error(exception);
-
     switch (exception.code) {
       case "P2002":
         response.status(HttpStatus.CONFLICT);
