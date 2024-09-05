@@ -12,7 +12,9 @@ import {
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -42,6 +44,9 @@ export class UsersController {
     type: UserEntity,
     description: "User has created successfully.",
   })
+  @ApiConflictResponse({
+    description: "User with such email already exist.",
+  })
   @Post()
   createUser(@Body() userDto: CreateUserDto) {
     return this.usersService.create(userDto);
@@ -53,6 +58,9 @@ export class UsersController {
   @ApiOkResponse({
     type: [UserEntity],
     description: "Success.",
+  })
+  @ApiForbiddenResponse({
+    description: "User does not have required role (ADMIN).",
   })
   @RequireRoles("ADMIN")
   @Get()

@@ -30,6 +30,9 @@ export class UsersService {
       include: {
         roles: true,
       },
+      orderBy: {
+        id: "asc",
+      },
     });
   }
 
