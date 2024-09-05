@@ -5,7 +5,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { $Enums, UserRole } from "@prisma/client";
+import { $Enums } from "@prisma/client";
 
 import { ROLES_KEY } from "./require-roles.decorator";
 
@@ -37,7 +37,7 @@ export class RolesGuard implements CanActivate {
     }
 
     return user.roles.some(
-      (role: UserRole) => requiredRoles.includes(role.role)
+      (role: $Enums.Role) => requiredRoles.includes(role)
     );
   }
 }
