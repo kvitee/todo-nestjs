@@ -13,37 +13,49 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
 
+    let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = exception.message;
+
+    const modelName = exception.meta?.modelName;
 
     switch (exception.code) {
       case "P2002":
-        response.status(HttpStatus.CONFLICT);
+        statusCode = HttpStatus.CONFLICT;
 
         message = {
           User: "Email already taken.",
           UserRole: "User already has this role.",
         }[
-          `${exception.meta?.modelName}`
+          `${modelName}`
         ] ?? message;
 
-        response.json({
-          message: message,
-        });
+        break;
+
+      case "P2003":
+        statusCode = HttpStatus.NOT_FOUND;
+
+        if (modelName === "UserRole") {
+          message = "User does not exist";
+        }
 
         break;
 
       case "P2025":
-        response
-          .status(HttpStatus.NOT_FOUND)
-          .json({
-            message: `${exception.meta?.modelName} does not exist.`,
-          });
+        statusCode = HttpStatus.NOT_FOUND;
+        message = `${modelName} does not exist.`;
 
         break;
 
       default:
         super.catch(exception, host);
-        break;
+        return;
     }
+
+    response
+      .status(statusCode)
+      .json({
+        statusCode,
+        message,
+      });
   }
 }
