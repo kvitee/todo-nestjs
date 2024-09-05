@@ -1,13 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { User } from "@prisma/client";
 import {
   IsEmail,
+  IsInt,
   IsNotEmpty,
-  IsNumber,
   IsString,
   IsStrongPassword,
   Length,
 } from "class-validator";
-import { User, UserRole } from "@prisma/client";
+
+import { UserRoleEntity } from "../../roles/entities/user-role.entity";
 
 
 export class UserEntity implements User {
@@ -15,7 +17,7 @@ export class UserEntity implements User {
     example: 41,
     description: "ID of user",
   })
-  @IsNumber()
+  @IsInt()
   readonly id: number;
 
   @ApiProperty({
@@ -76,13 +78,10 @@ export class UserEntity implements User {
   readonly name: string;
 
   @ApiProperty({
-    example: [
-      {
-        userId: 41,
-        role: "USER",
-      },
-    ],
     description: "Array of user roles",
+    required: false,
+    isArray: true,
+    type: UserRoleEntity,
   })
-  readonly roles?: UserRole[];
+  readonly roles?: UserRoleEntity[];
 }

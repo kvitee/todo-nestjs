@@ -19,9 +19,12 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
       case "P2002":
         response.status(HttpStatus.CONFLICT);
 
-        if (exception.meta?.modelName === "User") {
-          message = "Email already taken.";
-        }
+        message = {
+          User: "Email already taken.",
+          UserRole: "User already has this role.",
+        }[
+          `${exception.meta?.modelName}`
+        ] ?? message;
 
         response.json({
           message: message,
