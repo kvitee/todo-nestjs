@@ -47,7 +47,7 @@ export class AuthService {
 
   private async generateToken(user: UserEntity): Promise<AuthEntity> {
     const payload = {
-      sub: user.id,
+      id: user.id,
       username: user.email,
       roles: user.roles.map(
         (userRole) => userRole.role
